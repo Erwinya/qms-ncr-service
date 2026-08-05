@@ -1,0 +1,5 @@
+# Local / Docker-without-local-profile: use PostgreSQL from application.yaml
+# Activated by docker-compose via SPRING_PROFILES_ACTIVE=docker
+spring:
+  jpa:
+    open-in-view: false

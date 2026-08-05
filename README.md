@@ -13,18 +13,24 @@ Repository: [Erwinya/qms-ncr-service](https://github.com/Erwinya/qms-ncr-service
 
 ```text
 OPEN → UNDER_REVIEW → CONTAINED → CLOSED
-                 ↘ CANCELLED ↗
+         ↓               ↑
+      CANCELLED     UNDER_REVIEW
+         ↑               │
+         └───────────────┘
+  (UNDER_REVIEW may also close directly)
 ```
+
+This is an intentionally open demo API (no auth) for portfolio / local evaluation.
 
 ## Requirements
 
 - Java 17+
 - Maven 3.9+
 
-## Run locally (H2)
+## Run locally (H2 by default)
 
 ```powershell
-.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=local"
+.\mvnw.cmd spring-boot:run
 ```
 
 Open:
@@ -58,20 +64,20 @@ Content-Type: application/json
 }
 ```
 
-## Docker
+## Docker (PostgreSQL)
 
 ```bash
 docker compose up --build
 ```
 
-Default compose uses PostgreSQL. For a quick demo without Docker DB, prefer the `local` profile above.
+Compose sets `SPRING_PROFILES_ACTIVE=docker` so the API uses PostgreSQL (not the default H2 profile).
 
 ## Tech
 
 - Spring Boot 3.5 / Java 17
 - Spring Data JPA
 - springdoc OpenAPI
-- H2 (`local`) / PostgreSQL (default)
+- H2 by default (`local` profile) / PostgreSQL via Docker (`docker` profile)
 
 ## License
 
