@@ -90,6 +90,18 @@ public class NcrService {
                     "Invalid status transition: " + ncr.getStatus() + " -> " + next
             );
         }
+        if (next == NcrStatus.CONTAINED) {
+            String action = trimToNull(request.containmentAction());
+            if (action == null) {
+                action = trimToNull(ncr.getContainmentAction());
+            }
+            if (action == null) {
+                throw new BadRequestException(
+                        "containmentAction is required when moving to CONTAINED"
+                );
+            }
+            ncr.setContainmentAction(action);
+        }
         ncr.setStatus(next);
         if (request.note() != null && !request.note().isBlank()) {
             String existing = ncr.getDispositionNotes();
