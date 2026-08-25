@@ -72,6 +72,29 @@ docker compose up --build
 
 Compose sets `SPRING_PROFILES_ACTIVE=docker` so the API uses PostgreSQL (not the default H2 profile).
 
+Published host ports:
+
+| Service | Host port | Notes |
+|---------|-----------|--------|
+| API | `8082` | Swagger: http://localhost:8082/swagger-ui.html |
+| Postgres | `5434` | Maps to container `5432` |
+
+Credentials: database `qms_ncr`, user `qms`, password `qms`.
+
+### Host app + Compose database
+
+If you run the API on the host against the Compose Postgres container:
+
+```powershell
+$env:SPRING_PROFILES_ACTIVE="docker"
+$env:DB_URL="jdbc:postgresql://localhost:5434/qms_ncr"
+$env:DB_USERNAME="qms"
+$env:DB_PASSWORD="qms"
+.\mvnw.cmd spring-boot:run
+```
+
+Use port **5434** (not 5432) when connecting from the host.
+
 ## Tech
 
 - Spring Boot 3.5 / Java 17
