@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 
 public record UpdateNcrStatusRequest(
         @NotNull NcrStatus status,
+        @Size(max = 2000) String containmentAction,
         @Size(max = 2000) String note
 ) {
 }
