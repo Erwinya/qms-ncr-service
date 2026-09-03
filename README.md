@@ -9,6 +9,7 @@ Repository: [Erwinya/qms-ncr-service](https://github.com/Erwinya/qms-ncr-service
 - Create NCRs with severity, lot/part context, and reporter
 - List and filter by status
 - Update details while the report is active
+- Expose `/actuator/health` for local and container probes
 - Enforce a clear status workflow:
 
 ```text
@@ -21,6 +22,10 @@ OPEN → UNDER_REVIEW → CONTAINED → CLOSED
 ```
 
 This is an intentionally open demo API (no auth) for portfolio / local evaluation.
+
+## CORS / frontend
+
+Local browser requests are allowed from the companion [ncr-console](https://github.com/Erwinya/ncr-console) Vite app at `http://localhost:5174` or `http://127.0.0.1:5174`.
 
 ## Requirements
 
@@ -36,9 +41,14 @@ This is an intentionally open demo API (no auth) for portfolio / local evaluatio
 Open:
 
 - Swagger UI: http://localhost:8082/swagger-ui.html
+- Health: http://localhost:8082/actuator/health
 - API root redirects to Swagger
 
 ## Example
+
+```bash
+curl -s http://localhost:8082/actuator/health
+```
 
 ```http
 POST /api/v1/ncrs
@@ -95,10 +105,17 @@ $env:DB_PASSWORD="qms"
 
 Use port **5434** (not 5432) when connecting from the host.
 
+## Tests
+
+```powershell
+.\mvnw.cmd test
+```
+
 ## Tech
 
 - Spring Boot 3.5 / Java 17
 - Spring Data JPA
+- Spring Boot Actuator
 - springdoc OpenAPI
 - H2 by default (`local` profile) / PostgreSQL via Docker (`docker` profile)
 
