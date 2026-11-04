@@ -31,6 +31,7 @@ Local browser requests are allowed from the companion [ncr-console](https://gith
 
 - Java 17+
 - Maven 3.9+
+- GitHub Actions CI runs `./mvnw test` on push
 
 ## Run locally (H2 by default)
 
