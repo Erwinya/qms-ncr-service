@@ -70,5 +70,47 @@ class NcrWorkflowIntegrationTest {
                                 {"status":"OPEN"}
                                 """))
                 .andExpect(status().isBadRequest());
+
+        mockMvc.perform(put("/api/v1/ncrs/{id}/status", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"status":"CONTAINED"}
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.data").value("containmentAction is required when moving to CONTAINED"));
+
+        mockMvc.perform(put("/api/v1/ncrs/{id}/status", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "status":"CONTAINED",
+                                  "containmentAction":"Hold remaining wafers and quarantine lot LOT-4821",
+                                  "note":"Containment logged"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.status").value("CONTAINED"))
+                .andExpect(jsonPath("$.data.containmentAction").value(
+                        "Hold remaining wafers and quarantine lot LOT-4821"));
+    }
+
+    @Test
+    void create_RejectsInvalidPayload() throws Exception {
+        mockMvc.perform(post("/api/v1/ncrs")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "title":"",
+                                  "description":"",
+                                  "severity":null,
+                                  "reportedBy":""
+                                }
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.statusMessage").value("VALIDATION_FAILED"))
+                .andExpect(jsonPath("$.data.title").exists())
+                .andExpect(jsonPath("$.data.description").exists())
+                .andExpect(jsonPath("$.data.severity").exists())
+                .andExpect(jsonPath("$.data.reportedBy").exists());
     }
 }

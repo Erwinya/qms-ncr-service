@@ -9,6 +9,7 @@ Repository: [Erwinya/qms-ncr-service](https://github.com/Erwinya/qms-ncr-service
 - Create NCRs with severity, lot/part context, and reporter
 - List and filter by status
 - Update details while the report is active
+- Field-level validation (`VALIDATION_FAILED`); `containmentAction` required for `CONTAINED`
 - Expose `/actuator/health` for local and container probes
 - Enforce a clear status workflow:
 
